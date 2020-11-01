@@ -6,12 +6,12 @@ homepage: https://github.com/qst-exe/spearly_flutter
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
-  flutter: ">=1.10.0"
+  flutter: ">=1.22.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  webview_flutter: ^0.3.22+1
+  webview_flutter: ^1.0.5
   http: ^0.12.2
 
 dev_dependencies:
