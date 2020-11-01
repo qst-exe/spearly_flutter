@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin Spearly Flutter'),
         ),
         body: SpearlyFlutter(
-          apiKey: "Bearer xxxxx",
+          apiKey: "xxxxx",
           contentId: "c-yyyyy",
           disableImage: true,
         ),

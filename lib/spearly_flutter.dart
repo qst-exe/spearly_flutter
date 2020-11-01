@@ -141,7 +141,7 @@ class _SpearlyFlutterState extends State<SpearlyFlutter> {
   _getContent() async {
     final http.Response response = await http.get(
       "https://www.spearly.com/api/v1/contents/${widget.contentId}",
-      headers: {HttpHeaders.authorizationHeader: widget.apiKey},
+      headers: {HttpHeaders.authorizationHeader: "Bearer ${widget.apiKey}"},
     );
     if (response.statusCode != 200) {
       return;
