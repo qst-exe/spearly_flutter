@@ -3,6 +3,7 @@ library spearly_flutter;
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:webview_flutter/webview_flutter.dart';
@@ -63,6 +64,7 @@ class SpearlyFlutter extends StatefulWidget {
 
 class _SpearlyFlutterState extends State<SpearlyFlutter> {
   WebViewController _controller;
+  bool _isLoading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -90,17 +92,34 @@ class _SpearlyFlutterState extends State<SpearlyFlutter> {
           return Container(
               width: _contentWidth,
               height: _contentHeight,
-              child: WebView(
-                onWebViewCreated: (WebViewController webViewController) async {
-                  _controller = webViewController;
-                  await _loadHtmlFromAssets(
+              child: Stack(children: <Widget>[
+                WebView(
+                  onWebViewCreated:
+                      (WebViewController webViewController) async {
+                    _controller = webViewController;
+                    await _loadHtmlFromAssets(
                       title: _title,
                       image: _image,
                       description: _description,
-                      body: _body);
-                },
-                javascriptMode: JavascriptMode.unrestricted,
-              ));
+                      body: _body,
+                    );
+                  },
+                  javascriptMode: JavascriptMode.unrestricted,
+                  onPageFinished: (_) {
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  },
+                ),
+                _isLoading
+                    ? Container(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    : Stack(),
+              ]));
         } else {
           return SizedBox.shrink();
         }
@@ -146,7 +165,6 @@ class _SpearlyFlutterState extends State<SpearlyFlutter> {
     if (response.statusCode != 200) {
       return;
     }
-
     return json.decode(response.body);
   }
 }
